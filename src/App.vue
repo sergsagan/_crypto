@@ -313,6 +313,13 @@ export default {
       return this.graph.map(
           (price) => 5 + ((price - minValue) * 95) / (maxValue - minValue)
       );
+    },
+
+    pageStateOptions() {
+      return {
+        filter: this.filter,
+        page: this.page
+      }
     }
   },
 
@@ -341,10 +348,9 @@ export default {
         price: "-",
       };
 
-      this.tickers.push(currentTicker);
+      this.tickers = [...this.tickers, currentTicker];
       this.filter = "";
 
-      localStorage.setItem('crypto-list', JSON.stringify(this.tickers));
       this.subscribeToUpdates(currentTicker.name);
     },
 
@@ -364,6 +370,9 @@ export default {
     selectedTicker() {
       this.graph = [];
     },
+    tickers(newValue, oldvalue) {
+      localStorage.setItem('crypto-list', JSON.stringify(this.tickers));
+    },
     paginatedTickers() {
       if (this.paginatedTickers.length === 0 && this.page > 1) {
         this.page -= 1;
@@ -371,16 +380,11 @@ export default {
     },
     filter() {
       this.page = 1;
-
-      window.history.pushState(
-          null, document.title,
-          `${window.location.pathname}?filter=${this.filter}&page=${this.page}`
-      );
     },
-    page() {
+    pageStateOptions(value) {
       window.history.pushState(
           null, document.title,
-          `${window.location.pathname}?filter=${this.filter}&page=${this.page}`
+          `${window.location.pathname}?filter=${value.filter}&page=${value.page}`
       );
     }
   }
