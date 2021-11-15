@@ -330,7 +330,12 @@ export default {
     updateTicker(tickerName, price) {
       this.tickers
           .filter(t => t.name === tickerName)
-          .forEach(t => { t.price = price })
+          .forEach(t => {
+            if (t === this.selectedTicker) {
+              this.graph.push(price)
+            }
+            t.price = price
+          })
     },
 
     formatPrice(price) {
@@ -338,8 +343,8 @@ export default {
         return price;
       }
       return price > 1
-          ? parseFloat(price).toFixed(2)
-          : parseFloat(price).toPrecision(2);
+          ? price.toFixed(2)
+          : price.toPrecision(2);
     },
     
     add() {
