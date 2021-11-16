@@ -1,4 +1,4 @@
-# crypto-vue
+# crypto
 
 ## Project setup
 ```
