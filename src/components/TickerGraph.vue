@@ -3,7 +3,10 @@
     <h3 class="text-lg leading-6 font-medium text-gray-900 my-8">
       {{ ticker.name }} - USD
     </h3>
-    <div class="flex items-end border-gray-600 border-b border-l h-64" ref="graph">
+    <div
+      class="flex items-end border-gray-600 border-b border-l h-64"
+      ref="graph"
+    >
       <div
         v-for="(bar, idx) in normalizedGraph"
         :key="idx"
@@ -83,6 +86,15 @@ export default {
     },
     reset() {
       this.$emit("graph-reset");
+    },
+  },
+
+  watch: {
+    graph: {
+      handler() {
+        this.$nextTick().then(this.calculateMaxGraphElevents);
+      },
+      deep: true,
     },
   },
 
